@@ -63,14 +63,15 @@ export default function TrainingScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* 头部 */}
-        <View className="px-5 pt-4 pb-6">
-          <Text className="text-3xl font-bold text-foreground">训练</Text>
+        <View className="px-5 pt-6 pb-7 bg-primary/5 rounded-b-[28px]">
+          <Text className="text-xs tracking-[2px] text-muted">FITLIFE</Text>
+          <Text className="text-3xl font-semibold text-foreground mt-2">训练</Text>
           <Text className="text-base text-muted mt-1">{today.replace(/-/g, "/")}</Text>
         </View>
 
         {/* 今日训练卡片 */}
         <View className="px-5 mb-6">
-          <View className="bg-surface rounded-2xl p-5 border border-border">
+          <View className="bg-surface rounded-3xl p-5 border border-border/70 shadow-sm">
             <View className="flex-row items-center justify-between mb-4">
               <Text className="text-lg font-semibold text-foreground">今日训练</Text>
               {todaySessions.length > 0 && (
@@ -83,7 +84,7 @@ export default function TrainingScreen() {
             {hasActiveSession ? (
               <TouchableOpacity
                 onPress={handleContinueSession}
-                className="bg-warning rounded-xl py-4 items-center"
+                className="bg-warning rounded-2xl py-4 items-center"
                 activeOpacity={0.8}
               >
                 <Text className="text-background font-semibold text-lg">继续训练</Text>
@@ -94,7 +95,7 @@ export default function TrainingScreen() {
             ) : (
               <TouchableOpacity
                 onPress={activeTemplate ? handleStartPlanWorkout : handleStartFreeWorkout}
-                className="bg-primary rounded-xl py-4 items-center"
+                className="bg-primary rounded-2xl py-4 items-center"
                 activeOpacity={0.8}
               >
                 <Text className="text-background font-semibold text-lg">
@@ -107,7 +108,7 @@ export default function TrainingScreen() {
 
         {/* 今日计划 */}
         <View className="px-5 mb-6">
-          <View className="bg-surface rounded-2xl p-5 border border-border">
+          <View className="bg-surface rounded-3xl p-5 border border-border/70 shadow-sm">
             <View className="flex-row items-center justify-between mb-3">
               <Text className="text-lg font-semibold text-foreground">今日计划</Text>
               <TouchableOpacity onPress={() => router.push("/training/templates")} activeOpacity={0.7}>
@@ -144,7 +145,7 @@ export default function TrainingScreen() {
                   {todayPlan?.day?.exercises.map((exercise) => {
                     const meta = state.exercises.find((item) => item.id === exercise.exerciseId);
                     return (
-                      <View key={exercise.id} className="bg-background rounded-xl px-4 py-3 border border-border">
+                      <View key={exercise.id} className="bg-background rounded-2xl px-4 py-3 border border-border/70">
                         <Text className="text-foreground font-medium">{meta?.name || "动作"}</Text>
                         <Text className="text-muted text-sm">
                           {exercise.sets} 组 × {exercise.reps} 次{exercise.weight ? ` · ${exercise.weight}kg` : ""}
@@ -160,7 +161,7 @@ export default function TrainingScreen() {
 
         {/* AI 助手建议 */}
         <View className="px-5 mb-6">
-          <View className="bg-surface rounded-2xl p-5 border border-border">
+          <View className="bg-surface rounded-3xl p-5 border border-border/70 shadow-sm">
             <View className="flex-row items-center justify-between mb-3">
               <Text className="text-lg font-semibold text-foreground">AI 助手今日建议</Text>
               <TouchableOpacity onPress={() => router.push("/profile/ai")} activeOpacity={0.7}>
@@ -184,7 +185,7 @@ export default function TrainingScreen() {
           <View className="flex-row gap-3">
             <TouchableOpacity
               onPress={() => router.push("/training/exercises")}
-              className="flex-1 bg-surface rounded-xl p-4 border border-border items-center"
+              className="flex-1 bg-surface rounded-2xl p-4 border border-border/70 items-center"
               activeOpacity={0.7}
             >
               <IconSymbol name="list.bullet" size={28} color={colors.primary} />
@@ -192,7 +193,7 @@ export default function TrainingScreen() {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => router.push("/training/templates")}
-              className="flex-1 bg-surface rounded-xl p-4 border border-border items-center"
+              className="flex-1 bg-surface rounded-2xl p-4 border border-border/70 items-center"
               activeOpacity={0.7}
             >
               <IconSymbol name="doc.text" size={28} color={colors.primary} />
@@ -211,9 +212,9 @@ export default function TrainingScreen() {
           </View>
 
           {state.workoutTemplates.length === 0 ? (
-            <View className="bg-surface rounded-xl p-6 border border-border items-center">
+            <View className="bg-surface rounded-2xl p-6 border border-border/70 items-center">
               <IconSymbol name="doc.text" size={40} color={colors.muted} />
-              <Text className="text-muted mt-3 text-center">暂无训练模板{"\n"}点击"训练模板"创建</Text>
+              <Text className="text-muted mt-3 text-center">暂无训练模板{"\n"}点击“训练模板”创建</Text>
             </View>
           ) : (
             <View className="gap-3">
@@ -221,7 +222,7 @@ export default function TrainingScreen() {
                 <TouchableOpacity
                   key={template.id}
                   onPress={() => router.push("/training/templates")}
-                  className="bg-surface rounded-xl p-4 border border-border"
+                  className="bg-surface rounded-2xl p-4 border border-border/70"
                   activeOpacity={0.7}
                 >
                   <View className="flex-row items-center justify-between">

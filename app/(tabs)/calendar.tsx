@@ -34,14 +34,6 @@ export default function CalendarScreen() {
   
   const [selectedDate, setSelectedDate] = useState(today);
 
-  if (state.isLoading) {
-    return (
-      <ScreenContainer className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </ScreenContainer>
-    );
-  }
-
   const daysInMonth = getDaysInMonth(currentDate.year, currentDate.month);
   const firstDay = getFirstDayOfMonth(currentDate.year, currentDate.month);
 
@@ -68,6 +60,14 @@ export default function CalendarScreen() {
     const bodyMetric = state.bodyMetrics.find(m => m.date === selectedDate);
     return { workouts, nutrition, bodyMetric };
   }, [selectedDate, state.workoutSessions, state.nutritionEntries, state.bodyMetrics]);
+
+  if (state.isLoading) {
+    return (
+      <ScreenContainer className="flex-1 items-center justify-center">
+        <ActivityIndicator size="large" color={colors.primary} />
+      </ScreenContainer>
+    );
+  }
 
   const goToPrevMonth = () => {
     setCurrentDate(prev => {

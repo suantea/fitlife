@@ -31,17 +31,7 @@ export default function TemplateEditorScreen() {
   const [pickerVisible, setPickerVisible] = useState(false);
 
   useEffect(() => {
-    if (!editingTemplate) {
-      const initialDays: TemplateDay[] = Array.from({ length: trainingDays }, (_, index) => ({
-        dayIndex: index + 1,
-        name: `训练日 ${index + 1}`,
-        muscleGroups: [],
-        exercises: [],
-      }));
-      setDays(initialDays);
-      return;
-    }
-
+    if (!editingTemplate) return;
     setName(editingTemplate.name);
     setDescription(editingTemplate.description || "");
     setTrainingDays(editingTemplate.schedule.trainingDaysPerWeek);
@@ -55,6 +45,17 @@ export default function TemplateEditorScreen() {
     })));
     setActiveDayIndex(editingTemplate.days[0]?.dayIndex || 1);
   }, [editingTemplate]);
+
+  useEffect(() => {
+    if (editingTemplate) return;
+    const initialDays: TemplateDay[] = Array.from({ length: trainingDays }, (_, index) => ({
+      dayIndex: index + 1,
+      name: `训练日 ${index + 1}`,
+      muscleGroups: [],
+      exercises: [],
+    }));
+    setDays(initialDays);
+  }, [editingTemplate, trainingDays]);
 
   useEffect(() => {
     setDays((prevDays) => {
@@ -193,7 +194,7 @@ export default function TemplateEditorScreen() {
       <Stack.Screen options={{ title: editingTemplate ? "编辑模板" : "新建模板" }} />
 
       <ScrollView contentContainerStyle={styles.pageContent}>
-        <View style={styles.header}>
+        <View style={[styles.header, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <TextInput
             style={[styles.nameInput, { color: colors.text }]}
             placeholder="模板名称"
@@ -213,7 +214,7 @@ export default function TemplateEditorScreen() {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>训练周期</Text>
           <View style={styles.cycleRow}>
-            <View style={styles.cycleItem}>
+            <View style={[styles.cycleItem, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <Text style={[styles.cycleLabel, { color: colors.icon }]}>每周训练天数</Text>
               <View style={styles.stepperRow}>
                 <TouchableOpacity
@@ -231,7 +232,7 @@ export default function TemplateEditorScreen() {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.cycleItem}>
+            <View style={[styles.cycleItem, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <Text style={[styles.cycleLabel, { color: colors.icon }]}>轮次间休息</Text>
               <View style={styles.stepperRow}>
                 <TouchableOpacity
@@ -403,6 +404,10 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 16,
+    borderWidth: 1,
+    borderRadius: 16,
+    marginHorizontal: 16,
+    marginTop: 12,
   },
   nameInput: {
     fontSize: 24,
@@ -429,7 +434,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     borderRadius: 12,
-    backgroundColor: "rgba(0,0,0,0.03)",
+    borderWidth: 1,
   },
   cycleLabel: {
     fontSize: 13,

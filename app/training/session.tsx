@@ -1,21 +1,20 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { ScrollView, Text, View, TouchableOpacity, TextInput, Alert, FlatList, Modal } from "react-native";
+import { ScrollView, Text, View, TouchableOpacity, TextInput, Alert, Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { ScreenContainer } from "@/components/screen-container";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useColors } from "@/hooks/use-colors";
 import { ExercisePicker } from "@/components/exercise-picker";
 import { useApp } from "@/lib/app-context";
-import { generateId, getCurrentTimeString } from "@/lib/storage";
+import { getCurrentTimeString } from "@/lib/storage";
 import type { WorkoutSet, Exercise } from "@/lib/types";
 import { MUSCLE_GROUP_NAMES } from "@/lib/types";
 import * as Haptics from "expo-haptics";
-import { Platform } from "react-native";
 
 export default function WorkoutSessionScreen() {
   const colors = useColors();
   const router = useRouter();
-  const { state, endWorkoutSession, addSetToSession, updateSetInSession, deleteSetFromSession } = useApp();
+  const { state, endWorkoutSession, addSetToSession, deleteSetFromSession } = useApp();
   
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [showExercisePicker, setShowExercisePicker] = useState(false);
@@ -110,18 +109,18 @@ export default function WorkoutSessionScreen() {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const handleStartRest = () => {
+  const handleStartRest = useCallback(() => {
     setRestSeconds(timerMode === "countDown" ? targetRestSeconds : 0);
     setIsResting(true);
     if (Platform.OS !== "web") {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }
-  };
+  }, [timerMode, targetRestSeconds]);
 
-  const handleStopRest = () => {
+  const handleStopRest = useCallback(() => {
     setIsResting(false);
     setRestSeconds(0);
-  };
+  }, []);
 
   const handleAdjustTime = (delta: number) => {
     if (timerMode === "countDown") {
@@ -172,7 +171,18 @@ export default function WorkoutSessionScreen() {
     if (Platform.OS !== "web") {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
-  }, [selectedExercise, weight, reps, isWarmup, restSeconds, timerMode, targetRestSeconds, state.currentSession, addSetToSession]);
+  }, [
+    selectedExercise,
+    weight,
+    reps,
+    isWarmup,
+    restSeconds,
+    timerMode,
+    targetRestSeconds,
+    state.currentSession,
+    addSetToSession,
+    handleStartRest,
+  ]);
 
   const handleEndWorkout = () => {
     Alert.alert(
@@ -237,8 +247,8 @@ export default function WorkoutSessionScreen() {
     if (!planned) return null;
     const completed = state.currentSession?.sets.filter(
       (set) => set.exerciseId === exerciseId && !set.isWarmup
-    ).length;
-    return { completed, target: planned.sets };
+    ).length ?? 0;
+    return { completed, target: planned.sets ?? 0 };
   };
 
   return (

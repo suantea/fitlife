@@ -21,14 +21,6 @@ export default function SessionDetailScreen() {
   const [editedSets, setEditedSets] = useState<WorkoutSet[]>(session?.sets || []);
   const [notes, setNotes] = useState(session?.notes || "");
 
-  if (!session) {
-    return (
-      <ScreenContainer className="flex-1 items-center justify-center">
-        <Text className="text-muted">未找到该训练记录</Text>
-      </ScreenContainer>
-    );
-  }
-
   const grouped = useMemo<[string, WorkoutSet[]][]>(() => {
     const map: Record<string, WorkoutSet[]> = {};
     editedSets.forEach((set) => {
@@ -40,6 +32,14 @@ export default function SessionDetailScreen() {
       sets.sort((a, b) => a.setIndex - b.setIndex),
     ]);
   }, [editedSets]);
+
+  if (!session) {
+    return (
+      <ScreenContainer className="flex-1 items-center justify-center">
+        <Text className="text-muted">未找到该训练记录</Text>
+      </ScreenContainer>
+    );
+  }
 
   const handleUpdateSet = (setId: string, field: keyof WorkoutSet, value: string | boolean) => {
     setEditedSets((prev) => prev.map((set) => {

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { eq, and, sql, desc } from "drizzle-orm";
-import { foods, nutritionLogs, nutritionLogItems, carbCyclingSettings, userProfiles } from "../../drizzle/schema";
+import { eq, and, sql } from "drizzle-orm";
+import { foods, nutritionLogs, nutritionLogItems, carbCyclingSettings } from "../../drizzle/schema";
 import { protectedProcedure, router } from "../_core/trpc";
 import { ensureDb } from "./utils";
 
@@ -13,7 +13,7 @@ export const nutritionRouter = router({
     }))
     .query(async ({ ctx, input }) => {
       const db = await ensureDb();
-      let query = db.select().from(foods);
+      let query = db.select().from(foods).$dynamic();
       
       if (input.query) {
         query = query.where(sql`${foods.name} LIKE ${`%${input.query}%`}`);
@@ -47,10 +47,11 @@ export const nutritionRouter = router({
     .input(z.object({ date: z.string() })) // YYYY-MM-DD
     .query(async ({ ctx, input }) => {
       const db = await ensureDb();
+      const logDate = new Date(input.date);
       const log = await db.query.nutritionLogs.findFirst({
         where: and(
           eq(nutritionLogs.userId, ctx.user.id),
-          eq(nutritionLogs.date, input.date)
+          eq(nutritionLogs.date, logDate)
         ),
         with: {
           items: {
@@ -72,20 +73,21 @@ export const nutritionRouter = router({
     }))
     .mutation(async ({ ctx, input }) => {
       const db = await ensureDb();
+      const logDate = new Date(input.date);
       
       await db.transaction(async (tx) => {
         // 1. Get or Create Log for the day
         let log = await tx.query.nutritionLogs.findFirst({
           where: and(
             eq(nutritionLogs.userId, ctx.user.id),
-            eq(nutritionLogs.date, input.date)
+            eq(nutritionLogs.date, logDate)
           )
         });
 
         if (!log) {
           const [result] = await tx.insert(nutritionLogs).values({
             userId: ctx.user.id,
-            date: input.date,
+            date: logDate,
             totalCalories: 0,
             totalProtein: 0,
             totalCarbs: 0,

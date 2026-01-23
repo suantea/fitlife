@@ -12,7 +12,7 @@ export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
       const pool = mysql.createPool(process.env.DATABASE_URL);
-      _db = drizzle(pool, { schema });
+      _db = drizzle(pool, { schema, mode: "default" });
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;

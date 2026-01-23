@@ -94,7 +94,7 @@ export default function TemplatesScreen() {
     const totalExercises = item.days.reduce((sum, day) => sum + day.exercises.length, 0);
 
     return (
-      <View style={[styles.card, { backgroundColor: colors.background, borderColor: colors.border }]}>
+      <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         <View style={styles.cardHeader}>
           <View style={{ flex: 1 }}>
             <Text style={[styles.cardTitle, { color: colors.text }]}>{item.name}</Text>

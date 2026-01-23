@@ -40,7 +40,7 @@ export default function NutritionScreen() {
   const [protein, setProtein] = useState("");
   const [carbs, setCarbs] = useState("");
   const [fats, setFats] = useState("");
-  const [date, setDate] = useState(getTodayString());
+  const [date] = useState(getTodayString());
 
   const [showCustomFoodModal, setShowCustomFoodModal] = useState(false);
   const [customFoodName, setCustomFoodName] = useState("");
@@ -99,8 +99,8 @@ export default function NutritionScreen() {
   }, [currentGoal, state.userProfile.nutritionGoal, updateUserProfile]);
 
   const foodLibrary = useMemo(() => {
-    const preset = getAllFoods().map((food) => ({ ...food, source: "database" as const })) as Array<FoodLibraryItem & { source: "database" }>;
-    const custom = state.customFoods.map((food) => ({ ...food, source: "custom" as const })) as Array<FoodLibraryItem & { source: "custom" }>;
+    const preset = getAllFoods().map((food) => ({ ...food, source: "database" as const })) as (FoodLibraryItem & { source: "database" })[];
+    const custom = state.customFoods.map((food) => ({ ...food, source: "custom" as const })) as (FoodLibraryItem & { source: "custom" })[];
     return [...preset, ...custom];
   }, [state.customFoods]);
 
@@ -352,7 +352,11 @@ export default function NutritionScreen() {
     setCycleLength(activeCarbPlan.cycleLength);
     setPlanStartDate(activeCarbPlan.startDate || getTodayString());
     setDayTypes(activeCarbPlan.days.map((day) => day.type));
-    const initial = { ...macroByType };
+    const initial = {
+      high: { calories: "", carbs: "", protein: "", fat: "" },
+      medium: { calories: "", carbs: "", protein: "", fat: "" },
+      low: { calories: "", carbs: "", protein: "", fat: "" },
+    };
     activeCarbPlan.days.forEach((day) => {
       initial[day.type] = {
         calories: String(day.calories),
@@ -367,8 +371,9 @@ export default function NutritionScreen() {
   return (
     <ScreenContainer className="flex-1">
       {/* 头部 */}
-      <View className="px-5 py-4 border-b border-border">
-        <Text className="text-2xl font-bold text-foreground">饮食</Text>
+      <View className="px-5 pt-6 pb-6 bg-primary/5 rounded-b-[28px]">
+        <Text className="text-xs tracking-[2px] text-muted">FITLIFE</Text>
+        <Text className="text-2xl font-semibold text-foreground mt-2">饮食</Text>
       </View>
 
       {/* Tab切换 */}
@@ -397,7 +402,7 @@ export default function NutritionScreen() {
       {activeTab === "log" && (
         <View className="flex-1">
           {/* 今日统计 */}
-          <View className="px-5 py-4 bg-primary/10">
+          <View className="mx-5 mt-4 px-5 py-4 bg-primary/10 rounded-2xl border border-border/70">
             <View className="flex-row items-center justify-between mb-2">
               <Text className="text-foreground font-semibold">今日统计</Text>
               {dailyTarget && (

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Alert, Modal, KeyboardAvoidingView, Platform } from "react-native";
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { ScreenContainer } from "@/components/screen-container";

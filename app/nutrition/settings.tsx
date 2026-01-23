@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Alert, Switch } from "react-native";
-import { useRouter } from "expo-router";
 import { ScreenContainer } from "@/components/screen-container";
 import { useColors } from "@/hooks/use-colors";
 import { trpc } from "@/lib/trpc";
@@ -9,10 +8,9 @@ const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
 const TYPES = ["High", "Medium", "Low"];
 
 export default function NutritionSettingsScreen() {
-  const router = useRouter();
   const colors = useColors();
   
-  const { data: settings, isLoading } = trpc.nutrition.getSettings.useQuery();
+  const { data: settings } = trpc.nutrition.getSettings.useQuery();
   const utils = trpc.useUtils();
   
   const updateMutation = trpc.nutrition.updateSettings.useMutation({

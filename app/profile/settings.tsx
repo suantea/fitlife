@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Text, View, TouchableOpacity, TextInput, ScrollView, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { ScreenContainer } from "@/components/screen-container";
@@ -290,7 +290,7 @@ export default function SettingsScreen() {
             </View>
             <View className="flex-row items-center justify-between p-4">
               <Text className="text-foreground">开发者</Text>
-              <Text className="text-muted">健康训练记录</Text>
+              <Text className="text-muted">何浩天 / Neal</Text>
             </View>
           </View>
         </View>
