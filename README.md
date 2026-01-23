@@ -30,8 +30,8 @@ FitLife 面向健身爱好者与长期训练人群。传统健身软件要么功
 5. 在“AI 助手”中配置 API Key，获取每日建议
 
 **APK 下载**
-- 推荐通过 GitHub Releases 发布 APK，并在 Release 说明中提供下载链接
-- 不建议直接把 APK 提交到仓库主分支（体积大、拉取慢）
+- 下载链接
+https://expo.dev/accounts/nealtts/projects/health-training-app/builds/e87b0544-383a-436b-83d5-5cb87461ce7a
 
 ## 3. 代码架构与不足
 **架构概览**
