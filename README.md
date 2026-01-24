@@ -31,7 +31,7 @@ FitLife 面向健身爱好者与长期训练人群。传统健身软件要么功
 
 **APK 下载**
 - 下载链接
-https://expo.dev/accounts/nealtts/projects/health-training-app/builds/e87b0544-383a-436b-83d5-5cb87461ce7a
+https://expo.dev/accounts/nealtts/projects/health-training-app/builds/3b432ec6-ff7d-4c8f-938b-33ff065149f7
 
 ## 3. 代码架构与不足
 **架构概览**
